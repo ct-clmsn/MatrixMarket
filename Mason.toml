@@ -1,0 +1,6 @@
+
+[brick]
+name = "MatrixMarket"
+version = "0.1.0"
+
+[dependencies]
