@@ -20,7 +20,8 @@
 pragma "error mode fatal"
 module MatrixMarket {
 
-  use IO;
+  use IO,
+      LayoutCS;
 
   enum MMCoordFormat { Coordinate, Array }
   enum MMTypes { Real, Complex, Pattern }
@@ -364,7 +365,9 @@ class MMReader {
      }
 
      Dtoret = {1..nrows, 1..ncols};
-     var spDom : sparse subdomain(Dtoret);
+     //var spDom : sparse subdomain(Dtoret);
+     // Use the new LayoutCS mapping as default
+     var spDom : sparse subdomain(Dtoret) dmapped CS();
      var toret : [spDom] eltype;
 
      if finfo.mm_types == MMTypes.Real { assert(eltype == real, "expected real, data in file is not real"); }
