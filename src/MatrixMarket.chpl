@@ -93,10 +93,11 @@ module MatrixMarket {
       var headers_written:bool;
       var last_rowno:int;
 
-      proc MMWriter(type eltype, const fname:string) {
-         fd = open(fname, iomode.cw, iokind.native);
-         fout = fd.writer(start=0);
-         headers_written=false;
+      proc init(type eltype, const fname:string) {
+         this.eltype = eltype;
+         this.fd = open(fname, iomode.cw, iokind.native);
+         this.fout = fd.writer(start=0);
+         this.headers_written = false;
       }
 
       proc write_headers(nrows, ncols, nnz=-1) {
@@ -195,9 +196,9 @@ class MMReader {
    var fin:channel(false, iokind.dynamic, true);
    var finfo:MMInfo;
 
-   proc MMReader(const fname:string) {
-      fd = open(fname, iomode.r, hints=IOHINT_SEQUENTIAL|IOHINT_CACHED);
-      fin = fd.reader(start=0, hints=IOHINT_SEQUENTIAL|IOHINT_CACHED);
+   proc init(const fname:string) {
+      this.fd = open(fname, iomode.r, hints=IOHINT_SEQUENTIAL|IOHINT_CACHED);
+      this.fin = fd.reader(start=0, hints=IOHINT_SEQUENTIAL|IOHINT_CACHED);
    }
 
    proc read_header() {
